@@ -1,3 +1,5 @@
 # Cursor - ignore user-local content but allow shared rules
 /.cursor/*
 !/.cursor/rules/
+/temp/
+
