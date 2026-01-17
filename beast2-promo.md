@@ -29,9 +29,9 @@ Boost.Asio gave us the field experience. These design choices reflect what we le
 
 Beast2 is an umbrella term for a family of libraries that work together:
 
-**Boost.Capy** — The execution foundation, optimized for async I/O. Core types: `task<T>`, `thread_pool`, `strand`, `async_mutex`. Tasks propagate executor context through `await_suspend` automatically, guaranteeing correct executor affinity. Provides allocation-free type erasure, frame allocators for coroutine memory, automatic stop token propagation, and buffer algorithms. **This library alone** should go into the C++ Standard Library.
+**Boost.Capy** — The execution foundation, optimized for async I/O. Core types: `task<T>`, `thread_pool`, `strand`, `async_mutex`. Tasks propagate executor context through `await_suspend` automatically, guaranteeing correct executor affinity. Provides allocation-free type erasure, frame allocators for coroutine memory, automatic stop token propagation, and buffer algorithms. **This should go into the C++ Standard Library**.
 
-**Boost.Corosio** — Coroutine-first portable networking and I/O that wrap per-platform implementations. Every operation returns an awaitable; no callbacks. Core types: `socket`, `acceptor`, `resolver`, `strand`, `io_context`, SSL stream wrappers (WolfSSL and OpenSSL), non-templated streams, scatter/gather buffers, native `std::stop_token` cancellation.
+**Boost.Corosio** — Coroutine-first portable networking and I/O that wrap per-platform implementations. Every operation returns an awaitable; no callbacks. Core types: `socket`, `acceptor`, `resolver`, `strand`, `io_context`, SSL stream wrappers (WolfSSL and OpenSSL), non-templated streams, scatter/gather buffers, native `std::stop_token` cancellation. This **should not** go into the C++ Standard Library, for a while.
 
 **Boost.Http** — Sans-I/O HTTP/1.1 with strict RFC compliance. Protocol logic isolated from I/O for testability and framework independence. Core types: `request`, `response`, `parser`, `serializer`, `router`. Non-templated containers, memory-bounded parsers, body streaming, Express.js-style routing, automatic gzip/deflate/brotli application, and an extensive collection of HTTP "middleware" algorithms such as multipart/form processing, cookie management, bcrypt, and more.
 
@@ -43,22 +43,36 @@ Beast2 is an umbrella term for a family of libraries that work together:
 
 Each of these libraries is built for direct use. Boost.Capy can be standardized without risky socket or SSL decisions. Combine as needed.
 
-## Technical Achievements
+## Technical Advantages
+
+Beast2 continues the Boost tradition of innovation through working code.
+
+### Zero-Allocation Steady-State
+
+`capy::task` coroutine frames reuse memory (delete before dispatch). Type erasure is achieved without small-buffer optimizations or malloc. User types are preserved through the abstraction boundary. Key insight:
+
+> _The coroutine frame allocation we cannot avoid, pays for all the type-erasure we need._
 
 ### Templates Where They Matter
 
 Boost.Asio:
 ```cpp
-template<class AsyncStream, class CompletionToken>
-auto do_io(AsyncStream&, CompletionToken&&);
+template< class AsyncStream, class CompletionToken >
+auto do_io( AsyncStream&, CompletionToken&& );
 ```
 
 Boost.Corosio:
 ```cpp
-auto do_io(corosio::io_stream&); // returns awaitable
+auto do_io( corosio::io_stream& ); // returns awaitable
 ```
 
-No loss of generality. Buffer sequences and executors remain concept-driven. Stream wrappers require no templates.
+No loss of generality. Buffer sequences and executors remain concept-driven. Stream wrappers require no templates. The drawbacks of `std::execution` can be seen in a single line:
+
+```cpp
+connect( sndr, rcvr ); // C++26, unavoidable templates
+```
+
+Here, the compiler must see all the types (or perform expensive type-erasure, which is inconvenient at this call site and uncompetitive). No encapsulation. Long compile times. ABI fragility. Unfriendly to network programs.
 
 ### ABI Stability by Design
 
@@ -80,12 +94,6 @@ class wolfssl_stream : public io_stream
 ```
 
 Stream algorithms see `io_stream&` not `wolfssl_stream&` and can be written as ordinary functions (non-templates). Link your HTTP library against Corosio and WolfSSL. Relink against OpenSSL. No recompilation. SSL implementation becomes a runtime decision with zero ABI consequence. Have both in the same executable if you want (maybe useful for researchers).
-
-### Zero-Allocation Steady-State
-
-`capy::task` coroutine frames reuse memory (delete before dispatch). Type erasure is achieved without small-buffer optimizations or malloc. User types are preserved through the abstraction boundary. Key insight:
-
-> _The coroutine frame allocation we cannot avoid, pays for all the type-erasure we need._
 
 ### No Configuration Macros
 
@@ -113,7 +121,7 @@ One library. One object file. Runtime configuration.
 
 ### Implementation Hiding
 
-No platform headers at call sites. No implementation structures in user code. Translation-unit isolation by default. ABI is stable by design, and if adopted in the standard can be evolved rather than frozen.
+No platform headers at call sites. No implementation structures in user code. Translation-unit isolation by default. ABI is stable by design, and thus if adopted in the standard can be evolved rather than freezing.
 
 ## Boost.Beast2
 
@@ -124,7 +132,7 @@ Boost.Beast2:
 srv.wwwroot.use( "/", serve_static( "C:\\Users\\Vinnie\\my-website" ) );
 ```
 
-Express.js patterns. C++ performance. Multithreaded execution.
+Express.js patterns. Multithreaded execution. C++ performance.
 
 ## Summary
 

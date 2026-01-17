@@ -10,3 +10,6 @@ Read and follow build settings from workspace configuration files (CMakeLists.tx
 - CMake minimum version
 - Compiler flags and standards
 - Build targets and dependencies
+- Build directory: `build/` (created by preset, do NOT create other build directories)
+- Never create `build-cmake/` or similar ad-hoc directories
+- If CMakeUserPresets.json exists, use `cmake --preset <name>` (check file for available presets)
