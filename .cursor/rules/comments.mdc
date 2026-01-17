@@ -10,3 +10,4 @@ alwaysApply: true
 - Code should be self-documenting for the how/what
 - Keep comments short
 - If the reason is obvious, no comment needed
+- Line divider comments for big section breaks only
