@@ -6,10 +6,27 @@ alwaysApply: true
 
 # Build Configuration
 
-Read and follow build settings from workspace configuration files (CMakeLists.txt, .code-workspace, etc.) including:
-- CMake minimum version
-- Compiler flags and standards
-- Build targets and dependencies
-- Build directory: `build/` (created by preset, do NOT create other build directories)
-- Never create `build-cmake/` or similar ad-hoc directories
-- If CMakeUserPresets.json exists, use `cmake --preset <name>` (check file for available presets)
+## CMake Rules (MANDATORY)
+
+**BEFORE running any cmake command:**
+1. Read CMakePresets.json or CMakeUserPresets.json in the target repo
+2. Use `cmake --preset <name>` with a preset from that file
+
+**FORBIDDEN commands (cause in-source builds):**
+- `cmake .`
+- `cmake -B .`
+- `cmake -S . -B .`
+- `cmake` with no -B or --preset
+- Any cmake invocation from the source directory without --preset
+
+**Correct pattern:**
+```
+cmake --preset <preset-name>
+cmake --build --preset <preset-name>
+```
+
+## General Build Settings
+
+- Read CMakeLists.txt for compiler flags, standards, dependencies
+- Never create ad-hoc build directories (build-cmake/, mybuild/, etc.)
+- Build artifacts must NEVER appear in source tree
