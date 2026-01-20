@@ -1,7 +1,8 @@
 ---
 description: .plan.md file location
 globs:
-alwaysApply: true
+alwaysApply: never
 ---
 
 Plans always go in coro-io-context/.plans
+
