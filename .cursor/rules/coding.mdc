@@ -1,5 +1,5 @@
 ---
-description: C++ class layout and documentation conventions
+description: C++ class layout and coding and comment and documentation conventions
 globs:
 alwaysApply: true
 ---
@@ -8,7 +8,9 @@ alwaysApply: true
 
 - Private data members first
 - Public interface last
+- little to no ascii-art dividers
 - Javadoc on almost all public functions
 - struct if all public, else class
 - never break encapsulation without explicit instruction
 - don't call make_error_code directly unless necessary
+- idiomatic boost::system::error_code check is ec.failed() not ec or !!ec

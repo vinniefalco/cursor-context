@@ -1,30 +1,16 @@
 ---
-description: Documentation style conventions for code snippets, javadocs, and API documentation examples
+description: docstring javadoc documentation style for code snippets and asciidoc adoc
 globs: 
 alwaysApply: false
 ---
 
-- ONLY IN DOCS: space inside matching delimiters ()[]{} 
+- ONLY inside comments or adoc files: space inside matching delimiters ()[]{}
+- Fully document public APIs (headers), docstring javadoc (`/**` or `///`)
+- What to document: class, struct, enum, using, typedef, functions, members, constants, variables, concepts
 
-# Javadoc Documentation
-
-## Scope
-
-**Public API (headers)** - Javadoc style (`/**` or `///`):
-
-- Classes and structs
-- Enums and enum classes
-- Type aliases (`using`, `typedef`)
-- Functions (free functions, member functions)
-- Constants and variables
-- Concepts (C++20)
-
-**Implementation (headers and source files)** - Light `//` comments:
-
-- One or two lines explaining the "why" of non-obvious or surprising code
-- Helps LLMs and humans quickly understand motivation
-
-**Automatic pairing**: When documenting a header file (`.hpp`, `.h`), also find and document its corresponding source file (`.cpp`, `.cc`) in the same directory or `src/` directory.
+- Lightly document implementation (headers and sources) with '//' to help LLMs and humans understand motivation
+- NEVER obvious things that repeat subsequent code. Only explain the WHY, for non-obvious or surprising things
+- Automatic pairing: When documenting a header also find and document the corresponding source file in src/ or same dir
 
 ## Brief Style
 
