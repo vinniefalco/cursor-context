@@ -16,23 +16,27 @@ description: Refresh documentation after API changes
 - [ ] Group remaining API into topical sections
 - [ ] Order non-specified sections: dependencies first, simple to complex
 
-## 3. Light Pass (Structure)
+## 3. Build Introduction Page
+- [ ] Context is now rich—write intro page while API understanding is fresh
+- [ ] Follow Intro Page Structure (see below) exactly
+- [ ] This page sets expectations for entire doc set
+
+## 4. Light Pass (Structure)
 - [ ] Create/reorganize section outline
-- [ ] Intro page structure (see below)
 - [ ] One file per section, placeholder content only
 
-## 4. Medium Pass (Skeleton)
+## 5. Medium Pass (Skeleton)
 - [ ] Add key concepts to each section
 - [ ] Insert code example stubs
 - [ ] Preserve relevant existing prose
 
-## 5. Final Pass (Complete)
+## 6. Final Pass (Complete)
 - [ ] Web search each section's domain for context (pain points, common examples)—don't write about findings
 - [ ] Fill all content, examples, edge cases
 - [ ] Update examples for changed signatures
 - [ ] Ensure simple → complex progression
 
-## 6. Verify & Polish
+## 7. Verify & Polish
 - [ ] For each section: web search domain, confirm coverage, apply touchups
 - [ ] All public symbols documented
 - [ ] No references to removed API
