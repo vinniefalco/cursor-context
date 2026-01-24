@@ -5,8 +5,8 @@ alwaysApply: false
 ---
 
 - ONLY inside comments or adoc files: space inside matching delimiters ()[]{}
-- Fully document public APIs (headers), docstring javadoc (`/**` or `///`)
-- What to document: class, struct, enum, using, typedef, functions, members, constants, variables, concepts
+- Fully document public APIs (headers), docstring javadoc (`/**` or `///`), never "/* *" (on next line)
+- What to document: class, struct, union, enum, using, typedef, functions, members, constants, variables, concepts
 
 - Lightly document implementation (headers and sources) with '//' to help LLMs and humans understand motivation
 - NEVER obvious things that repeat subsequent code. Only explain the WHY, for non-obvious or surprising things
@@ -31,7 +31,7 @@ Start the brief based on function category:
 
 For full Javadocs, use this order (include only relevant sections):
 
-1. Brief (first line after `/**`, ends with period)
+1. Brief (first line after `/**`, ends with period, if one line use '///')
 2. Extended description - explain what problem this solves
 3. `@par` sections: Preconditions, Effects, Postconditions, Exception Safety, Thread Safety, Complexity
 4. `@throws`
@@ -54,6 +54,7 @@ Include sections only when relevant:
 | Exception Safety | Function can throw or has specific guarantees |
 | Thread Safety | Class/function used in concurrent contexts |
 | Complexity | Non-trivial algorithmic complexity |
+| Return | One line ONLY. Add overflow as preceding paragraph(s) |
 
 ## Content Guidelines
 
