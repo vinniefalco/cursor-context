@@ -19,3 +19,6 @@ alwaysApply: true
 - protect min max with paren (std::min)(...)
 - include <algorithm> sparingly (not for min max), its costly
 - always write unit tests for public headers, in corresponding cpp
+- warn user when a lambda coroutine declares or uses captured values, its use-after-free
+- use IILE parameters instead of captures in lambda coroutines
+
