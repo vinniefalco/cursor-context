@@ -1,2 +1,5 @@
-# agent-cpp
-context files for C++ development
+# Cursor Contexts
+
+Context files for agentic C++ development
+
+
