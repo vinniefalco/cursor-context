@@ -16,7 +16,8 @@ alwaysApply: true
 - struct if all public, else class
 - never break encapsulation without explicit instruction
 - don't call make_error_code directly unless necessary
-- idiomatic boost::system::error_code check is ec.failed() not ec or !!ec
+- DO NOT use failed() with std::error_code, use if(ec)
+- ALWAYS USE failed() ONLY with boost::system::error_code, instead of if(ec)
 - always update the tests after changing code
 - protect min max with paren (std::min)(...)
 - include <algorithm> sparingly (not for min max), its costly
