@@ -1,0 +1,77 @@
+---
+description: Antora doc/modules/ROOT directory layout and naming conventions
+globs: "**/doc/modules/ROOT/**"
+alwaysApply: false
+---
+
+# Documentation Layout (`doc/modules/ROOT/`)
+
+## Directory Structure
+
+```
+doc/modules/ROOT/
+├── nav.adoc
+└── pages/
+    ├── index.adoc
+    ├── other-top-level.adoc
+    ├── 2.topic-name/
+    │   ├── 2.intro.adoc
+    │   ├── 2a.first-sub.adoc
+    │   └── 2b.second-sub.adoc
+    └── 3.another-topic/
+        ├── 3.intro.adoc
+        ├── 3a.first-sub.adoc
+        └── 3b.second-sub.adoc
+```
+
+## Root-Level Pages
+
+- Live directly in `pages/` with no number prefix
+- Examples: `index.adoc`, `quick-start.adoc`, `why-capy.adoc`
+- kebab-case names
+
+## Numbered Section Directories
+
+- Format: `{N}.{topic-name}/` (e.g. `2.cpp20-coroutines/`, `5.buffers/`)
+- Numbers are sequential; topic name is kebab-case
+
+## Files Inside a Section
+
+### Intro file: `{N}.intro.adoc`
+
+- Every section directory has one
+- If an intro already exists, keep it (rename to `{N}.intro.adoc` if needed)
+- If none exists, create one with a compelling preface
+- **NEVER** list or link to subsection pages
+- Give a general overview that starts easy for beginners and naturally progresses to more technical material
+- Must stay valid if subsections are added, removed, or reordered
+
+### Subsection files: `{N}{letter}.{name}.adoc`
+
+- Letters sequential starting at `a` (e.g. `4a.tasks.adoc`, `4b.launching.adoc`)
+- **kebab-case** for general names (`7a.hello-task.adoc`)
+- **PascalCase** when the name is a C++ concept or type (`8a.ReadStream.adoc`)
+- **snake_case** only when matching an actual type name (`8i.any_buffer_sink.adoc`)
+
+## File Headers
+
+- Title as AsciiDoc level-1 heading (`= Title`)
+- No YAML frontmatter
+
+## nav.adoc
+
+- Single `*` for root-level pages and section intro pages
+- Double `**` for subsection pages nested under their section
+- Entry order mirrors the file numbering
+
+```
+* xref:index.adoc[Introduction]
+* xref:quick-start.adoc[Quick Start]
+* xref:2.topic/2.intro.adoc[Topic Title]
+** xref:2.topic/2a.first.adoc[First Subsection]
+** xref:2.topic/2b.second.adoc[Second Subsection]
+```
+
+## No Extra Directories
+
+Do not create `partials/`, `images/`, or `attachments/` subdirectories unless explicitly needed.
