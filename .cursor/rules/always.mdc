@@ -4,6 +4,8 @@ globs:
 alwaysApply: true
 ---
 
+- md file contents are not wrapped unless requested
+
 ## Workflow Orchestration
 
 ### 1. Plan Mode Default
