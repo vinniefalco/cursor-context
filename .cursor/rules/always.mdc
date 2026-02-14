@@ -4,7 +4,8 @@ globs:
 alwaysApply: true
 ---
 
-never use em dashes, use dash instead
+- never use em dashes, use dash instead
+- md file contents are not wrapped unless requested
 
 ## Workflow Orchestration
 
