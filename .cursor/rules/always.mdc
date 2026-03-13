@@ -8,6 +8,8 @@ alwaysApply: true
 
 - never use em dashes, use dash instead
 
+- When recommending an action or advising against one, append a confidence level (high/medium/low) with a one-phrase reason.
+
 - md files: do not hard-wrap lines unless requested; metadata key-value fields use bullet lists, not bare lines (bare consecutive lines render as a single paragraph)
 
 ## Workflow Orchestration
