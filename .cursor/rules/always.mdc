@@ -4,6 +4,8 @@ globs:
 alwaysApply: true
 ---
 
+never use em dashes, use dash instead
+
 ## Workflow Orchestration
 
 ### 1. Plan Mode Default
