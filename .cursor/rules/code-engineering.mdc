@@ -1,0 +1,50 @@
+---
+description: General code engineering principles that apply to all code
+globs:
+alwaysApply: true
+---
+
+## Change Discipline
+
+Every change must leave the codebase at least as clean as it found it.
+
+1. **General over ad hoc** - Prefer a general solution that handles multiple cases over a specific one that handles only the case at hand. Before writing an ad-hoc function or special-case branch, examine the surrounding code and ask whether a broader abstraction would subsume both the new case and existing ones with less total code. Ad-hoc additions compound - each one makes the next harder to avoid.
+2. **Search before creating** - Before writing a new function, pattern, constant, or module, search the codebase for existing equivalents. If one exists, use or extend it. Duplication is a defect, not a shortcut. Parsing logic, regex patterns, and normalization must live in exactly one module. Magic constants (fallback colors, thresholds, timeouts) that appear more than once must be named constants defined in one place.
+3. **Right file or no file** - Every addition must belong in the file receiving it. Check the module's docstring and existing scope. If the addition serves a different responsibility, find the correct home or create one with justification.
+4. **Scale triggers plan mode** - If a change requires a new file, touches three or more existing files, or introduces a new pattern or abstraction, stop and recommend plan mode. Structural decisions need human input.
+5. **Clean adjacent debt** - If you encounter technical debt adjacent to your change, fix it when the fix is small and safe. If it's large, flag it. Never add new debt.
+
+## Honest Functions
+
+A function must not produce effects its caller cannot see or did not ask for.
+
+- Never `pop()` or `del` keys from a dict argument unless the function is documented as consuming it. If a modified copy is needed, make one.
+- `dict(original)` is a shallow copy - nested dicts are still shared.
+- Never detect "unset" by comparing a config value to its default string. Use `None` or a sentinel object so that an intentional choice of the default value is distinguishable from "not set."
+- Never use `except Exception: pass` or `except Exception` that silently discards the error. At minimum, log the exception type and message.
+- Do not use `sys.exit()` inside library functions. Raise an exception and let the caller decide.
+
+## Resource Safety
+
+Every acquired resource has a guaranteed release path, even on failure.
+
+- Every `tempfile.mkdtemp()` must have a corresponding cleanup path, even if the operation that uses it fails.
+- Close or use a `with` block for every `Image.open()`, `fitz.open()`, and `requests.Session()` - do not rely on garbage collection.
+- Network calls need timeouts. A dead URL must not hang the process.
+- Atomic file writes: write to a temp file then `os.replace()` to the target path. Never write directly to a file that concurrent readers may see mid-write.
+
+## API Contracts
+
+Public interfaces must deliver exactly what they promise.
+
+- Never call a private method (`_name`) from outside its own class or module. If the caller needs it, make it public or add a public wrapper.
+- Validate enum-like string arguments against an explicit set of allowed values. Unknown values must raise, not silently fall through to a default branch.
+- When a class docstring says "all events include field X," every event must include field X. If one event is an exception, document it explicitly.
+- Module docstrings must describe what the module actually does, not what a different module does. If you rename or restructure, update the docstring in the same commit.
+
+## Concurrency
+
+Shared mutable state is never accessed without protection.
+
+- Never read or write shared mutable state across threads without holding the appropriate lock or copying the value.
+- Properties that expose internal mutable objects (`dict`, `list`) to callers must return a shallow copy, not a live reference.
