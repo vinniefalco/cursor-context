@@ -25,3 +25,7 @@ alwaysApply: true
 - Go fix failing CI tests without being told how
 - If something goes sideways, STOP and re-plan - don't keep pushing
 - Skip over-engineering on simple fixes
+
+## Plan Mode
+
+**WHEN RUNNING A PLAN** Go through the plan. Check every step. Make sure that it's efficient. Make sure that the instructions are clear. Make sure that the instructions are not ambiguous. Then do a data flow analysis. Does each step have the information that it needs delivered by the previous steps? Report on the results. Is this system efficient? Can any steps be combined? Are any steps doing too much? Which parts can run in parallel? Make no mistakes. Think deeply. Be honest.
